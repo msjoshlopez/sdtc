@@ -33,7 +33,6 @@ function Login() {
       onClick={() =>
         openModal({
           type: "LOGIN",
-          planId: "pln_freeb-1dhn0w7x",
           // priceId: "prc_..."
 
           onCompleted: (data) => {
