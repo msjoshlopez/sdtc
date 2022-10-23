@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MemberstackProvider } from "@memberstack/react";
-import { SignUpModal } from "@memberstack/react";
+
 const config = { publicKey: "pk_26071989784f93ddd807" };
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

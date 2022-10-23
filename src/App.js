@@ -1,27 +1,45 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useMemberstack } from "@memberstack/react";
+import {
+  MemberstackProtected,
+  SignInModal,
+  useMemberstack,
+} from "@memberstack/react";
 import React from "react";
-import { SignUpModal } from "@memberstack/react";
-import { useMemberstackModal } from "@memberstack/react";
+import { SignUpModal, ProfileModal } from "@memberstack/react";
+import {
+  useMemberstackModal,
+  useCustomerPortal,
+  useCheckout,
+} from "@memberstack/react";
 import { useAuth } from "@memberstack/react";
 
 function App() {
+  const openPortal = useCustomerPortal({
+    priceId: ["pln_p1-qy4m0wa4"],
+  });
+
   const { userId, status, getToken, isLoggedIn, signOut } = useAuth();
+  const checkout = useCheckout();
+
   return (
     <div className="App">
-      sd
-      <button
-        onClick={() => {
-          signOut();
-          window.location.href = "/";
-        }}
-      >
-        logout
-      </button>
-      <Dashboard />
-      <Signup />
-      <Login />
+      <MemberstackProtected onUnauthorized={<SignInModal />}>
+        <ProfileModal onCompleted={async (data) => console.log(data)} />
+        <button
+          onClick={async () =>
+            checkout({
+              priceId: "prc_year-g24o0wiz",
+            })
+          }
+        >
+          checkout
+        </button>
+
+        <button onClick={openPortal}>portal</button>
+        <Login />
+        <Signup />
+      </MemberstackProtected>
     </div>
   );
 }
@@ -35,11 +53,9 @@ function Login() {
           type: "LOGIN",
           // priceId: "prc_..."
 
-          onCompleted: (data) => {
-            debugger;
-          },
+          onCompleted: (data) => {},
           onError: (err) => {
-            debugger;
+            console.log(err);
           },
         })
       }
@@ -49,19 +65,23 @@ function Login() {
   );
 }
 function Signup() {
-  const { openModal } = useMemberstackModal();
+  const { openModal, hideModal } = useMemberstackModal();
 
   return (
-    <div
+    <button
       onClick={() =>
         openModal({
           type: "SIGNUP",
           planId: "pln_freeb-1dhn0w7x",
+          priceId: "prc_year-g24o0wiz-qy4m0wa4",
+          onCompleted: (data) => {
+            hideModal();
+          },
         })
       }
     >
-      Sign up
-    </div>
+      Register
+    </button>
   );
 }
 function Dashboard() {
@@ -72,7 +92,7 @@ function Dashboard() {
     memberstack
       .getCurrentMember()
       .then(({ data: member }) => setMember(member));
-  }, []);
+  }, [memberstack]);
 
   if (!member) return <div>no member</div>;
 
