@@ -72,15 +72,15 @@ function Signup() {
       onClick={() =>
         openModal({
           type: "SIGNUP",
-          planId: "pln_freeb-1dhn0w7x",
-          priceId: "prc_year-g24o0wiz-qy4m0wa4",
+          planId: "pln_p1-qy4m0wa4",
+          priceIds: "prc_year-g24o0wiz, prc_month-nn4n0wbt",
           onCompleted: (data) => {
             hideModal();
           },
         })
       }
     >
-      Register
+      Register23
     </button>
   );
 }
