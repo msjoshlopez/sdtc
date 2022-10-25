@@ -24,22 +24,8 @@ function App() {
 
   return (
     <div className="App">
-      <MemberstackProtected onUnauthorized={<SignInModal />}>
-        <ProfileModal onCompleted={async (data) => console.log(data)} />
-        <button
-          onClick={async () =>
-            checkout({
-              priceId: "prc_year-g24o0wiz",
-            })
-          }
-        >
-          checkout
-        </button>
-
-        <button onClick={openPortal}>portal</button>
-        <Login />
-        <Signup />
-      </MemberstackProtected>
+      <Login />
+      <Signup />
     </div>
   );
 }
@@ -68,35 +54,25 @@ function Signup() {
   const { openModal, hideModal } = useMemberstackModal();
 
   return (
-    <button
-      onClick={() =>
-        openModal({
-          type: "SIGNUP",
-          planId: "pln_p1-qy4m0wa4",
-          priceIds: "prc_year-g24o0wiz, prc_month-nn4n0wbt",
-          onCompleted: (data) => {
-            hideModal();
-          },
-        })
-      }
-    >
-      Register23
-    </button>
+    <div>
+      <button
+        onClick={() =>
+          openModal({
+            type: "SIGNUP",
+            planId: "pln_p1-qy4m0wa4",
+            onCompleted: (data) => {
+              console.log("complete", data);
+            },
+            onError: (err) => {
+              console.log("error", err);
+            },
+          })
+        }
+      >
+        Register
+      </button>
+      - should register under plan pln_p1-qy4m0wa4
+    </div>
   );
 }
-function Dashboard() {
-  const memberstack = useMemberstack();
-  const [member, setMember] = React.useState(null);
-
-  React.useEffect(() => {
-    memberstack
-      .getCurrentMember()
-      .then(({ data: member }) => setMember(member));
-  }, [memberstack]);
-
-  if (!member) return <div>no member</div>;
-
-  return <div>Welcome, {member.auth.email}</div>;
-}
-
 export default App;
