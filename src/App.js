@@ -16,7 +16,7 @@ import { useAuth } from "@memberstack/react";
 
 function App() {
   const openPortal = useCustomerPortal({
-    priceId: ["pln_p1-qy4m0wa4"],
+    priceId: ["prc_year-g24o0wiz"],
   });
 
   const { userId, status, getToken, isLoggedIn, signOut } = useAuth();
